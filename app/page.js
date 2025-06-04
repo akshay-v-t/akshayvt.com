@@ -1,103 +1,138 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Switch } from "@/components/ui/switch"
+import { Moon, Sun } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
+
+export default function HomePage() {
+  const [text, setText] = useState("")
+  const [darkMode, setDarkMode] = useState(true)
+  const fullText = "Hi, I’m Akshay V T"
+
+  useEffect(() => {
+    let i = 0
+    const interval = setInterval(() => {
+      setText(prev => prev + fullText[i])
+      i++
+      if (i >= fullText.length) clearInterval(interval)
+    }, 100)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-           Akshay V T{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className={cn("min-h-screen font-typewriter transition-colors duration-500", darkMode ? "bg-gradient-to-br from-black to-gray-900 text-white" : "bg-white text-black")}> 
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Grid background */}
+      <div className="pointer-events-none absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] z-0" />
+
+      {/* Navbar */}
+      <nav className="w-full px-6 py-4 flex  items-end relative z-10">
+        
+        <div className="flex items-center gap-4">
+          <Link href="#projects">Projects</Link>
+          <Link href="#about">About</Link>
+          <Link href="#contact">Contact</Link>
+          <Switch
+            checked={darkMode}
+            onCheckedChange={() => setDarkMode(!darkMode)}
+            className="ml-2"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {darkMode ? <Moon className="ml-2 size-4" /> : <Sun className="ml-2 size-4" />}
+          </Switch>
         </div>
+      </nav>
+
+      <main className="px-6 py-10 max-w-5xl mx-auto space-y-20 relative z-10">
+
+        {/* Hero Section */}
+        <section className="text-center space-y-4">
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 1 }} 
+            className="text-4xl sm:text-5xl font-bold tracking-tight">
+            {text}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="text-lg text-muted-foreground">
+            Front-End Developer specialized in React, Tailwind, and beautiful UI
+          </motion.p>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 1.3 }}
+          >
+            <Button size="lg">Download Resume</Button>
+          </motion.div>
+        </section>
+
+        {/* About Section */}
+        <section id="about">
+          <h2 className="text-2xl font-semibold mb-4">About Me</h2>
+          <p className="text-muted-foreground">
+            I'm a passionate front-end developer who transforms complex problems into elegant, performant web interfaces. I specialize in Next.js and UI libraries like ShadCN.
+          </p>
+        </section>
+
+        {/* Skills Section */}
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">Skills</h2>
+          <div className="flex flex-wrap gap-3">
+            {["HTML", "CSS", "JavaScript", "React", "Tailwind", "Next.js", "Git", "Figma"].map(skill => (
+              <Badge key={skill} variant="secondary" className="bg-white/10 dark:bg-white/10 text-inherit">{skill}</Badge>
+            ))}
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects">
+          <h2 className="text-2xl font-semibold mb-4">Projects</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              { title: "Portfolio Website", desc: "Modern personal portfolio built with Next.js and Tailwind." },
+              { title: "LMS Platform", desc: "Learning platform with course structure, built using React and Redux." },
+              { title: "eCommerce UI", desc: "Frontend for a custom store using Headless UI and shadcn." },
+            ].map((project, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.2 }}
+              >
+                <Card className="bg-white/5 dark:bg-white/5 backdrop-blur-sm border-white/10">
+                  <CardHeader>
+                    <CardTitle>{project.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{project.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="text-center space-y-4">
+          <h2 className="text-2xl font-semibold">Get in Touch</h2>
+          <p className="text-muted-foreground">I’m open to freelance or full-time opportunities. Let’s connect.</p>
+          <Button variant="outline" className="text-black">Contact Me</Button>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="text-center py-6 text-muted-foreground relative z-10">
+        &copy; {new Date().getFullYear()} Akshay V T. Built with ❤️ and Next.js.
       </footer>
     </div>
-  );
+  )
 }
