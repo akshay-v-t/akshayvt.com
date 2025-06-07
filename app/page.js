@@ -79,7 +79,7 @@ export default function HomePage() {
         <section id="about">
           <h2 className="text-2xl font-semibold mb-4">About Me</h2>
           <p className="text-muted-foreground">
-            I'm a passionate front-end developer who transforms complex problems into elegant, performant web interfaces. I specialize in Next.js and UI libraries like ShadCN.
+           I&apos;m a developer who transforms complex problems into elegant, performant web interfaces. I specialize in Next.js and UI libraries like ShadCN.
           </p>
         </section>
 
