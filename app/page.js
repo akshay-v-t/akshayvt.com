@@ -13,7 +13,7 @@ import Link from "next/link"
 export default function HomePage() {
   const [text, setText] = useState("")
   const [darkMode, setDarkMode] = useState(true)
-  const fullText = "Hi, I’m Akshay V T"
+  const fullText = `Hi, I’m Akshay V T`
 
   useEffect(() => {
     let i = 0
